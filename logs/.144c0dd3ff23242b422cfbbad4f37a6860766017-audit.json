@@ -1,0 +1,70 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 2
+    },
+    "auditLog": "logs\\.144c0dd3ff23242b422cfbbad4f37a6860766017-audit.json",
+    "files": [
+        {
+            "date": 1698845579031,
+            "name": "logs\\hello-world-2023-11-01-18.log",
+            "hash": "3f0efe7ca49d58061580bfd17b5a0f20c2c2a62faa8b006ff067f9e963df64e6"
+        },
+        {
+            "date": 1698850233432,
+            "name": "logs\\hello-world-2023-11-01-19.log",
+            "hash": "e62ceb04b8b9dc8d1cae155656999ae3a3c9c1f7694ea0bf82db23431d1ebad5"
+        },
+        {
+            "date": 1698850826042,
+            "name": "logs\\hello-world-2023-11-01-20.log",
+            "hash": "d1ad2051f7a2bf3238649868a26d6722bd3aecc1fc38547e95acda41cfec9fd6"
+        },
+        {
+            "date": 1698910880199,
+            "name": "logs\\hello-world-2023-11-02-12.log",
+            "hash": "4123910357997e3c99d28f2b9a1cfdbd1297526b9285ba3be21855ca9d168e1b"
+        },
+        {
+            "date": 1698916513200,
+            "name": "logs\\hello-world-2023-11-02-14.log",
+            "hash": "ad9023e93e661c21dceffc2260f0e681eed8697bc5b272092169d88905bf3f0f"
+        },
+        {
+            "date": 1698919617037,
+            "name": "logs\\hello-world-2023-11-02-15.log",
+            "hash": "67f40ad3ee35e18e8577521fe8447612652c6e2eff3569890b9f5914081d80da"
+        },
+        {
+            "date": 1698923518516,
+            "name": "logs\\hello-world-2023-11-02-16.log",
+            "hash": "9ebc12dfea2d39426a01db5d58193aeea6f9e7cbb038bb700d53e5aa0ea29f2c"
+        },
+        {
+            "date": 1698929118334,
+            "name": "logs\\hello-world-2023-11-02-17.log",
+            "hash": "5b83d8a45da10df6f520439758eb73a91cdba7c4bf2423b924834af010eee409"
+        },
+        {
+            "date": 1699003812892,
+            "name": "logs\\hello-world-2023-11-03-14.log",
+            "hash": "25208d03c718e51a0f7417f00b68730ea396cddda5d51845a5322837ffaa97c8"
+        },
+        {
+            "date": 1699010861838,
+            "name": "logs\\hello-world-2023-11-03-16.log",
+            "hash": "c8a9181acd59d041dc7df9c2b6982ee81c37a9774bb1ff881fc272e670aa3464"
+        },
+        {
+            "date": 1699013806938,
+            "name": "logs\\hello-world-2023-11-03-17.log",
+            "hash": "6e52e6a1d37de16a1657920d377209bff3f9befcf8f4d10d516dfaf95dd33b74"
+        },
+        {
+            "date": 1699016404179,
+            "name": "logs\\hello-world-2023-11-03-18.log",
+            "hash": "f4cc2d5096a90291eb8a0460d93a7b9be55a6ddc016478a1ccc7cb3ae07501f2"
+        }
+    ],
+    "hashType": "sha256"
+}

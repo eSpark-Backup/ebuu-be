@@ -1,0 +1,19 @@
+{"level":"error"}
+{"level":"error"}
+{"code":401,"errors":[],"level":"error","message":"Invalid email or password!"}
+{"code":11000,"index":0,"keyPattern":{"email":1},"keyValue":{"email":"admin@admin.com"},"level":"error"}
+{"code":401,"errors":[],"level":"error","message":"Invalid email or password!"}
+{"code":401,"errors":[],"level":"error","message":"Invalid email or password!"}
+{"code":401,"errors":[],"level":"error","message":"Invalid email or password!"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"code":400,"errors":[{"context":{"key":"password","label":"password"},"message":"\"password\" is required","path":["password"],"type":"any.required"}],"level":"error","message":"Failed to validate"}
+{"code":400,"errors":[{"context":{"key":"password","label":"password"},"message":"\"password\" is required","path":["password"],"type":"any.required"}],"level":"error","message":"Failed to validate"}
+{"code":400,"errors":[{"context":{"key":"password","label":"password"},"message":"\"password\" is required","path":["password"],"type":"any.required"}],"level":"error","message":"Failed to validate"}
+{"code":400,"errors":[],"level":"error","message":"Failed to validate"}
