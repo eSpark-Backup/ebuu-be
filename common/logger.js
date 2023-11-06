@@ -8,12 +8,12 @@ exports.l = pino({
     level: "debug",
 });
 
-const transport = new winston.transports.DailyRotateFile({
-    filename: `./logs/${appName}-%DATE%.log`,
-    datePattern: "YYYY-MM-DD-HH",
-    maxSize: "10m",
-    maxFiles: "2d",
-});
+// const transport = new winston.transports.DailyRotateFile({
+//     filename: `./logs/${appName}-%DATE%.log`,
+//     datePattern: "YYYY-MM-DD-HH",
+//     maxSize: "10m",
+//     maxFiles: "2d",
+// });
 
 exports.logger = winston.createLogger({
     level: "error",
