@@ -16,10 +16,6 @@ const UserSchema = new Schema({
     default: false,
     required: true,
   },
-  devices: {
-    type: [{ type: Types.ObjectId, ref: modelNames.Device }],
-    default: [],
-  },
 });
 
 module.exports = {
