@@ -17,7 +17,6 @@
     "mongoose": "^8.0.0",
     "morgan": "~1.9.1",
     "pino": "^8.16.1",
-    "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {

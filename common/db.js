@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 // const connection = mongoose.connection;
 mongoose.Promise = Promise;
-const { l, logger } = require("./logger");
+const { l } = require("./logger");
 const db = mongoose.Connection;
 
 let isConnected;
@@ -16,7 +16,6 @@ exports.connectDB = () => {
     });
 
     mongoose.connection.on("error", function (err) {
-      logger.error(err);
       l.error(`Mongoose default connection has occured error ${err}`);
     });
 
@@ -37,7 +36,6 @@ exports.connectDB = () => {
     try {
       mongoose.connect(process.env.MONGODB_URI);
     } catch (err) {
-      logger.error(err);
       console.log("err-->>>>", err);
     }
   });

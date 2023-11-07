@@ -1,9 +1,6 @@
-const { l, logger } = require("../common/logger");
+const { l } = require("../common/logger");
 exports.manageError = (err, uniqueKeysMapList = []) => {
   l.error(err);
-
-  logger.error(err);
-
   let errObject = {
     message: "Error in operation",
     code: 400,
