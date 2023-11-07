@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const modelNames = require("./model.names");
 const { Types } = Schema;
 
 const UserSchema = new Schema({
@@ -15,10 +16,12 @@ const UserSchema = new Schema({
     default: false,
     required: true,
   },
+  devices: {
+    type: [{ type: Types.ObjectId, ref: modelNames.Device }],
+    default: [],
+  },
 });
 
-const ModelName = "User";
-
 module.exports = {
-  UserModel: model(ModelName, UserSchema),
+  UserModel: model(modelNames.User, UserSchema),
 };

@@ -35,6 +35,9 @@ class UserService {
   createOne(data) {
     return UserModel.create(data);
   }
+  updateOne(filter, data) {
+    return UserModel.updateOne(filter, data);
+  }
   async login(userData) {
     const errorMsg = "Invalid email or password!";
     const { email, password } = userData;
