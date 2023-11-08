@@ -1,7 +1,8 @@
 const Joi = require("joi");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const { generateErrorObject } = require("../helpers/error.helper");
 const { UserModel } = require("../models/user.model");
-const bcrypt = require("bcrypt");
 
 class UserService {
   emailSchema = {
@@ -17,7 +18,6 @@ class UserService {
   getUserSchemaForAuth(data) {
     const schema = Joi.object({
       ...this.emailSchema,
-      secretKey: Joi.string().required(),
     });
     return schema.validate({ ...data });
   }
@@ -25,6 +25,9 @@ class UserService {
     const salt = bcrypt.genSaltSync(5);
     const hashedPassowrd = bcrypt.hashSync(password, salt);
     return hashedPassowrd;
+  }
+  signJWT(_id) {
+    return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "30d" });
   }
   comparePassword({ password, comparePassword }) {
     return bcrypt.compare(password, comparePassword);
@@ -53,20 +56,12 @@ class UserService {
   }
   async loginWithAuth(userData) {
     let errorMsg = "Invalid email";
-    const { email, secretKey } = userData;
+    const { email } = userData;
     const user = await this.getOne({ email, authEnabled: true });
     if (!user) {
       return Promise.reject(generateErrorObject(401, errorMsg));
     }
-    const comparedSecret = await this.comparePassword({
-      password: process.env.AUTH_SECRET,
-      comparePassword: secretKey,
-    });
-    if (comparedSecret) {
-      return user;
-    }
-    errorMsg = "Invalid Secret key!";
-    return Promise.reject(generateErrorObject(401, errorMsg));
+    return user;
   }
   async signup(userData) {
     const { email, password } = userData;
@@ -76,14 +71,7 @@ class UserService {
     });
   }
   async signupWithAuth(userData) {
-    const { email, secretKey } = userData;
-    const comparedSecret = await this.comparePassword({
-      password: process.env.AUTH_SECRET,
-      comparePassword: secretKey,
-    });
-    if (!comparedSecret) {
-      return Promise.reject(generateErrorObject(401, "Invalid Secret key!"));
-    }
+    const { email } = userData;
     return this.createOne({
       email,
       authEnabled: true,
