@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const { manageError } = require("../../../helpers/error.helper");
 const userService = require("../../../services/user.service");
 
@@ -16,7 +15,7 @@ class Controller {
         );
       }
       const user = await userService.login(req.body);
-      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+      const token = userService.signJWT(user._id);
       res.generateResponse(
         res,
         { token, user: { email: user.email } },
@@ -41,7 +40,7 @@ class Controller {
         );
       }
       const user = await userService.loginWithAuth(req.body);
-      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+      const token = userService.signJWT(user._id);
       res.generateResponse(
         res,
         { token, user: { email: user.email } },
