@@ -1,10 +1,9 @@
 const Joi = require("joi");
 const { manageError } = require("../../../helpers/error.helper");
 const deviceService = require("../../../services/device.service");
-const userService = require("../../../services/user.service");
 
 class Controller {
-  async create(req, res) {
+  async updateDevicePing(req, res) {
     try {
       const schema = Joi.object({
         name: Joi.string().required(),
@@ -12,7 +11,6 @@ class Controller {
         modelNumber: Joi.string().required(),
         firmwareVersion: Joi.string().required(),
         wifiSSID: Joi.string().required(),
-        secretKey: Joi.string().required(),
       });
       const { error } = schema.validate(req.body);
       if (error) {
@@ -24,35 +22,24 @@ class Controller {
           error.details
         );
       }
-      const comparedSecret = await userService.comparePassword({
-        password: process.env.DEVICE_AUTH_SECRET,
-        comparePassword: req.body.secretKey,
+      const filter = { macAddress: req.body.macAddress, user: null };
+      await deviceService.updateDevicePing(filter, req.body, {
+        upsert: true,
+        new: true,
       });
-      if (!comparedSecret) {
-        return res.generateResponse(res, "", 401, "Invalid Secret key!");
-      }
-      await deviceService.createNewDevice(
-        { macAddress: req.body.macAddress },
-        req.body,
-        {
-          upsert: true,
-          new: true,
-        }
-      );
-      res.generateResponse(res, "", 200, "Device created successfully!");
+      res.generateResponse(res, "", 200, "Ping updated successfully!");
     } catch (error) {
       const err = manageError(error);
       res.generateResponse(res, "", err.code, err.message, err.errors);
     }
   }
-  async getDevice(req, res) {
+  async getDevicePing(req, res) {
     try {
-      const device = await deviceService.findOne(
-        {
-          macAddress: req.params.macAddress,
-        },
-        { updatedAt: 1 }
-      );
+      const filter = {
+        macAddress: req.params.macAddress,
+        user: null,
+      };
+      const device = await deviceService.findOne(filter, { ping: 1 });
       if (!device) {
         return res.generateResponse(res, "", 404, "Device not found!");
       }
@@ -79,6 +66,32 @@ class Controller {
         200,
         "Device connected with user successfully!"
       );
+    } catch (error) {
+      const err = manageError(error);
+      res.generateResponse(res, "", err.code, err.message, err.errors);
+    }
+  }
+  async updateDeviceInfo(req, res) {
+    try {
+      const { error } = deviceService.getSchemaForUpdate(req.body);
+      if (error) {
+        return res.generateResponse(
+          res,
+          "",
+          400,
+          "Failed to update device!",
+          error.details
+        );
+      }
+      const filter = {
+        _id: req.params.id,
+        user: req.user._id,
+      };
+      const device = await deviceService.updateDevice(filter, req.body);
+      if (!device) {
+        return res.generateResponse(res, "", 404, "Device not found!");
+      }
+      res.generateResponse(res, "", 200, "Device updated successfully!");
     } catch (error) {
       const err = manageError(error);
       res.generateResponse(res, "", err.code, err.message, err.errors);
