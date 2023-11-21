@@ -49,6 +49,22 @@ class Controller {
       res.generateResponse(res, "", err.code, err.message, err.errors);
     }
   }
+  async getDeviceByID(req, res) {
+    try {
+      const filter = {
+        _id: req.params.id,
+        user: req.user._id,
+      };
+      const device = await deviceService.findOne(filter);
+      if (!device) {
+        return res.generateResponse(res, "", 404, "Device not found!");
+      }
+      res.generateResponse(res, device, 200, "Device fetched successfully!");
+    } catch (error) {
+      const err = manageError(error);
+      res.generateResponse(res, "", err.code, err.message, err.errors);
+    }
+  }
   async connectWithUser(req, res) {
     try {
       const device = await deviceService.connectWithUser(
