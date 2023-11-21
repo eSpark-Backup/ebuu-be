@@ -16,8 +16,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.0",
     "morgan": "~1.9.1",
-    "pino": "^8.16.1",
-    "winston-daily-rotate-file": "^4.7.1"
+    "pino": "^8.16.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
