@@ -15,7 +15,15 @@ class UserService {
     });
     return schema.validate({ ...data });
   }
-  getUserSchemaForAuth(data) {
+  getUserSchemaForAuthSignup(data) {
+    const schema = Joi.object({
+      ...this.emailSchema,
+      authType: Joi.string().required().valid("FACEBOOK", "GOOGLE", "APPLE"),
+      providerID: Joi.string().required(),
+    });
+    return schema.validate({ ...data });
+  }
+  getUserSchemaForAuthSignin(data) {
     const schema = Joi.object({
       ...this.emailSchema,
     });
@@ -71,10 +79,12 @@ class UserService {
     });
   }
   async signupWithAuth(userData) {
-    const { email } = userData;
+    const { email, providerID, authType } = userData;
     return this.createOne({
       email,
       authEnabled: true,
+      providerID,
+      authType,
     });
   }
 }

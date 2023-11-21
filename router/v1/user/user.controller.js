@@ -29,7 +29,7 @@ class Controller {
   }
   async loginWithAuth(req, res) {
     try {
-      const { error } = userService.getUserSchemaForAuth(req.body);
+      const { error } = userService.getUserSchemaForAuthSignin(req.body);
       if (error) {
         return res.generateResponse(
           res,
@@ -73,7 +73,7 @@ class Controller {
   }
   async signupWithAuth(req, res) {
     try {
-      const { error } = userService.getUserSchemaForAuth(req.body);
+      const { error } = userService.getUserSchemaForAuthSignup(req.body);
       if (error) {
         return res.generateResponse(
           res,

@@ -18,11 +18,12 @@ class DeviceService {
       options
     );
   }
-  findOne(filter, select) {
+  findOne(filter, select = {}) {
     return DeviceModel.findOne(filter, select);
   }
   connectWithUser(filter, user) {
     return DeviceModel.findOneAndUpdate(
+      // TODO: add timestamp (ping) validation as per requirement
       { ...filter, user: null },
       { user },
       { new: true }

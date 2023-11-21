@@ -16,8 +16,17 @@ const UserSchema = new Schema({
     default: false,
     required: true,
   },
+  providerID: {
+    type: Types.String,
+    unique: true,
+    sparse: true,
+  },
+  authType: {
+    type: Types.String,
+    enum: ["FACEBOOK", "GOOGLE", "APPLE", null],
+    default: null,
+  },
 });
-
 module.exports = {
   UserModel: model(modelNames.User, UserSchema),
 };
