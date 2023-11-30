@@ -1,32 +1,24 @@
-const Joi = require("joi");
 const { manageError } = require("../../../helpers/error.helper");
 const deviceService = require("../../../services/device.service");
 
 class Controller {
+  async addDevice(req, res) {
+    try {
+      const deviceInfo = await deviceService.addDevice(req.body);
+      res.generateResponse(
+        res,
+        { _id: deviceInfo._id },
+        200,
+        "Device created successfully!"
+      );
+    } catch (error) {
+      const err = manageError(error);
+      res.generateResponse(res, "", err.code, err.message, err.errors);
+    }
+  }
   async updateDevicePing(req, res) {
     try {
-      const schema = Joi.object({
-        name: Joi.string().required(),
-        macAddress: Joi.string().required(),
-        modelNumber: Joi.string().required(),
-        firmwareVersion: Joi.string().required(),
-        wifiSSID: Joi.string().required(),
-      });
-      const { error } = schema.validate(req.body);
-      if (error) {
-        return res.generateResponse(
-          res,
-          "",
-          400,
-          "Failed to create device!",
-          error.details
-        );
-      }
-      const filter = { macAddress: req.body.macAddress, user: null };
-      await deviceService.updateDevicePing(filter, req.body, {
-        upsert: true,
-        new: true,
-      });
+      await deviceService.updateDevicePing(req.body.macAddress);
       res.generateResponse(res, "", 200, "Ping updated successfully!");
     } catch (error) {
       const err = manageError(error);
@@ -35,31 +27,33 @@ class Controller {
   }
   async getDevicePing(req, res) {
     try {
-      const filter = {
-        macAddress: req.params.macAddress,
-        user: null,
-      };
-      const device = await deviceService.findOne(filter, { ping: 1 });
-      if (!device) {
-        return res.generateResponse(res, "", 404, "Device not found!");
-      }
+      const device = await deviceService.getDevicePing(req.params.id);
       res.generateResponse(res, device, 200, "Device fetched successfully!");
     } catch (error) {
       const err = manageError(error);
       res.generateResponse(res, "", err.code, err.message, err.errors);
     }
   }
-  async getDeviceByID(req, res) {
+  async getDeviceByUser(req, res) {
     try {
       const filter = {
         _id: req.params.id,
         user: req.user._id,
       };
-      const device = await deviceService.findOne(filter);
-      if (!device) {
-        return res.generateResponse(res, "", 404, "Device not found!");
-      }
+      const device = await deviceService.getSingleDevice(filter);
       res.generateResponse(res, device, 200, "Device fetched successfully!");
+    } catch (error) {
+      const err = manageError(error);
+      res.generateResponse(res, "", err.code, err.message, err.errors);
+    }
+  }
+  async getDevicesByUser(req, res) {
+    try {
+      const filter = {
+        user: req.user._id,
+      };
+      const devices = await deviceService.getManyDevices(filter);
+      res.generateResponse(res, devices, 200, "Devices fetched successfully!");
     } catch (error) {
       const err = manageError(error);
       res.generateResponse(res, "", err.code, err.message, err.errors);
@@ -69,7 +63,7 @@ class Controller {
     try {
       const device = await deviceService.connectWithUser(
         {
-          macAddress: req.body.macAddress,
+          _id: req.body._id,
         },
         req.user._id
       );

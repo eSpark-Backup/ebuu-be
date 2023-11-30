@@ -79,3 +79,10 @@ exports.generateErrorObject = (errorCode, message, errors = []) => {
     errors,
   };
 };
+
+exports.notFoundError = (message) => {
+  return {
+    code: 404,
+    message,
+  };
+};

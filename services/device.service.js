@@ -1,5 +1,9 @@
 const Joi = require("joi");
 const { DeviceModel } = require("../models/device.model");
+const {
+  generateErrorObject,
+  notFoundError,
+} = require("../helpers/error.helper");
 
 class DeviceService {
   getSchemaForUpdate(data) {
@@ -11,15 +15,56 @@ class DeviceService {
     });
     return schema.validate({ ...data });
   }
-  async updateDevicePing(filter, data, options) {
-    return DeviceModel.updateOne(
-      filter,
-      { ...data, ping: Date.now() },
-      options
-    );
+  addDevice(data) {
+    const schema = Joi.object({
+      name: Joi.string().required(),
+      macAddress: Joi.string().required(),
+      modelNumber: Joi.string().required(),
+      firmwareVersion: Joi.string().required(),
+      wifiSSID: Joi.string().required(),
+    });
+    const { error, value } = schema.validate(data);
+    if (error) {
+      throw generateErrorObject(400, "Failed to create device!", error.details);
+    }
+    return DeviceModel.create(value);
   }
-  findOne(filter, select = {}) {
-    return DeviceModel.findOne(filter, select);
+  async updateDevicePing(macAddress) {
+    try {
+      if (!macAddress) {
+        return Promise.reject(
+          generateErrorObject(400, "Mac Address is required!")
+        );
+      }
+      const device = await DeviceModel.findOneAndUpdate(
+        { macAddress },
+        {
+          ping: Date.now(),
+        }
+      );
+      if (!device) {
+        return Promise.reject(notFoundError("Device not found!"));
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getSingleDevice(filter, select = {}) {
+    try {
+      const device = await DeviceModel.findOne(filter, select);
+      if (!device) {
+        return Promise.reject(notFoundError("Device not found!"));
+      }
+      return device;
+    } catch (error) {
+      throw error;
+    }
+  }
+  getManyDevices(filter, select = {}) {
+    return DeviceModel.find(filter, select);
+  }
+  getDevicePing(_id) {
+    return this.getSingleDevice({ _id }, { ping: 1 });
   }
   connectWithUser(filter, user) {
     return DeviceModel.findOneAndUpdate(

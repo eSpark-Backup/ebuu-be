@@ -12,6 +12,10 @@ const QASchema = new Schema(
       type: Types.String,
       required: true,
     },
+    device: {
+      type: Types.ObjectId,
+      ref: modelNames.Device,
+    },
     user: {
       type: Types.ObjectId,
       ref: modelNames.User,

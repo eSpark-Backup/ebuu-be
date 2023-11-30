@@ -20,7 +20,7 @@ const authenticateUser = async (req, res, next) => {
     const data = jwt.verify(token, secret);
     const user = await userService.getOne({ _id: data._id });
     if (!user) {
-      errorMsg = "User Not Found!";
+      errorMsg = "Unauthorized User!";
       return res.generateResponse(res, "", 401, errorMsg);
     }
     req.user = user;
